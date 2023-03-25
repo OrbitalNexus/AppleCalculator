@@ -5,9 +5,6 @@ const operand_btns = document.querySelectorAll("button[data-type=operand]");
 const operator_btns = document.querySelectorAll("button[data-type=operator]");
 const delete_btn = document.getElementById("delete");
 
-// display output in second display element (total)
-total.value = output.value;
-
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -38,6 +35,7 @@ operand_btns.forEach((btn) => {
   });
 });
 
+
 delete_btn.addEventListener("click", (e) => {
   remove_active();
   output.value = output.value.substr(0, output.value.length - 1);
@@ -59,7 +57,6 @@ operator_btns.forEach((btn) => {
         equation.push(output.value);
         output.value = eval(equation.join(""));
         equation = [];
-        total.value = output.value;
         break;
       default:
         let last_item = equation[equation.length - 1];
