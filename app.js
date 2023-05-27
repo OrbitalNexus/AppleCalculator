@@ -31,11 +31,7 @@ operand_btns.forEach((btn) => {
 // If operator has been pushed then display next number button pressed.
     } else if (is_operator) {
       is_operator = false;
-      //let secondOperand = 
       output.value = e.target.value;
-      //equation.push(secondOperand);
-      //equation.join(" ");
-      //pressedButtons();
 // If using a dot then add to display. 
     } else if (output.value.includes(".")) {
       output.value = output.value + "" + e.target.value.replace(".", "");
@@ -46,12 +42,56 @@ operand_btns.forEach((btn) => {
   });
 });
 
-// For second display to work 
+// For each loop for operator buttons. 
+operator_btns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    remove_active();
+    e.currentTarget.classList.add("active");
+
+// Switch for operator buttons to do math right. 
+    switch (e.target.value) {
+      case "%":
+        output.value = parseFloat(output.value) / 100;
+        break;
+      case "invert":
+        output.value = parseFloat(output.value) * -1;
+        break;
+      case "=":
+        equation.push(output.value);
+        output.value = eval(equation.join(""));
+        console.log(equation.join(""));
+        equation = [];
+        break;
+// An array to hold operator buttons and do equation. 
+      default:
+        let last_item = equation[equation.length - 1];
+        if (["/", "*", "+", "-"].includes(last_item) && is_operator) {
+          equation.pop();
+          equation.push(e.target.value);
+        } else {
+          equation.push(output.value);
+          equation.push(e.target.value);
+          pressedButtons();
+        }
+        is_operator = true;
+        break;
+    }
+  });
+});
+
+// Delete button minuses one from displayed numbers. 
+delete_btn.addEventListener("click", (e) => {
+  remove_active();
+  output.value = output.value.substr(0, output.value.length - 1);
+});
+
+// Function for second display to work.
 function pressedButtons() {
   let pushButtons = total 
   pushButtons.value = equation.join(" ")
 };
 
+// Same code for display one with function and equation code.
 newoperand_btns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     remove_active();
@@ -72,11 +112,11 @@ newoperand_btns.forEach((btn) => {
   });
 });
 
+// same code as display one for operators with added function.
 newoperator_btns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     remove_active();
-    e.currentTarget.classList.add("active");
-// add % and invert cases for second display. 
+    e.currentTarget.classList.add("active"); 
     switch (e.target.value) {
         case "%":
           total.value = parseFloat(output.value) / 100;
@@ -88,7 +128,6 @@ newoperator_btns.forEach((btn) => {
         equation.push(output.value);
         output.value = eval(equation.join(""));
         equation = [];
-        //total.value = "0"
         break;
       default:
         let last_item = equation[equation.length - 1];
@@ -103,46 +142,5 @@ newoperator_btns.forEach((btn) => {
         is_operator = true;
         break;
       }
-  });
-});
-
-// Delete button minuses one from displayed numbers. 
-delete_btn.addEventListener("click", (e) => {
-  remove_active();
-  output.value = output.value.substr(0, output.value.length - 1);
-});
-
-// For each loop for operator buttons. 
-operator_btns.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    remove_active();
-    e.currentTarget.classList.add("active");
-
-    switch (e.target.value) {
-      case "%":
-        output.value = parseFloat(output.value) / 100;
-        break;
-      case "invert":
-        output.value = parseFloat(output.value) * -1;
-        break;
-      case "=":
-        equation.push(output.value);
-        output.value = eval(equation.join(""));
-        console.log(equation.join(""));
-        equation = [];
-        break;
-      default:
-        let last_item = equation[equation.length - 1];
-        if (["/", "*", "+", "-"].includes(last_item) && is_operator) {
-          equation.pop();
-          equation.push(e.target.value);
-        } else {
-          equation.push(output.value);
-          equation.push(e.target.value);
-          pressedButtons();
-        }
-        is_operator = true;
-        break;
-    }
   });
 });
